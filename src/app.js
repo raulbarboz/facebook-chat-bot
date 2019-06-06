@@ -3,6 +3,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
+require('dotenv').load();
 
 const app = express();
 
@@ -19,11 +20,10 @@ app.get('/', (req, res) => {
     res.send("Hi i'm a chatbot")
 })
 
-
 // Facebook
 
 app.get('/webhook/', (req, res) => {
-    if(req.query['hub.verify_token'] === "token_id") {
+    if(req.query['hub.verify_token'] === process.env.TOKEN) {
         res.send(req.query['hub.challenge'])
     }
     res.send("wrong token")
@@ -47,7 +47,7 @@ function sendText(sender, text) {
     let messageData = {text: text}
     request({
         url: "https/graph.facebook.com/v2.6/me/messages",
-        qs : {access_token: `${process.env.TOKEN}`},
+        qs : {access_token: process.env.TOKEN},
         method: "POST",
         json: {
             receipt: {id: sender},
