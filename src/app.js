@@ -3,7 +3,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
-require('dotenv').load();
+require('dotenv').config();
 
 const app = express();
 
@@ -28,6 +28,7 @@ app.get('/webhook/', (req, res) => {
     }
     res.send("wrong token")
 })
+
 app.post('/webhook/', (req, res) => {
     let messaging_events = req.body.entry[0].messaging_events
     for(let i = 0; i < messaging_events.length; i++){
